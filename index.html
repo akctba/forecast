@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Weather forecast</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container-fluid bg">
+        <div class="row">
+            <div class="col-12">
+
+                <!-- Weather widget -->
+                <div id="weatherforecast">
+
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-group mb-3 mt-3">
+                                    <input type="text" class="form-control" placeholder="City" aria-label="City"
+                                        aria-describedby="button-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="buttonSearch">
+                                            <img src="./search-button.svg" alt="search">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h1 id="cityName">C</h1>
+                                <!-- <p id="country">c</p> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h1 id="temp" class="display-2">x&#8451;</h1>
+                                <p><span class="text-muted">Feels like </span> <span id="feelslike"></span></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><span class="text-muted">Min</span> <span id="min"></span></p>
+                            </div>
+                            <div class="col-6">
+                                <p><span class="text-muted">Max</span> <span id="max"></span></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><span class="text-muted">Pressure</span> <span id="pressure"></span></p>
+                            </div>
+                            <div class="col-6">
+                                <p><span class="text-muted">Humidity</span> <span id="humidity"></span>%</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="list-inline" id="weather"></ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><span class="text-muted">Sunrise</span> <span id="sunrise"></span></p>
+                            </div>
+                            <div class="col-6">
+                                <p><span class="text-muted">Sunset</span> <span id="sunset"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div id="output"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+    <script src="forecastJs.js"></script>
+</body>
+
+</html>

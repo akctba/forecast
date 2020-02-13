@@ -1,0 +1,27 @@
+body,
+html {
+    height: 100%;
+}
+
+.bg {
+    /* The image used */
+    background-image: url("https://openweather.co.uk/storage/app/media/news-upgrade-api-multilingual-feature-us-cities-search-states.png");
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#weatherforecast {
+    width: 400px;
+    margin: 40px auto;
+    height: 600px;
+    word-wrap: normal;
+
+    background-color: bisque;
+
+}
