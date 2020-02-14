@@ -1,11 +1,5 @@
 $(document).ready(function(){
-
-    loadWeather(6173331);
-
-    $('#buttonSearch').click(function (e) { 
-        e.preventDefault();
-        
-    });
+    //loadWeather(6173331); // Vancouver BC, Canada
 });
 
 // -----------------
@@ -59,7 +53,6 @@ function loadWeather(location) {
 }
 
 
-
 // -----------------
 // FLAGS
 // -----------------
@@ -89,6 +82,10 @@ function countryCodeEmoji(cc) {
   return String.fromCodePoint(...chars);
 }
 
+// -----------------
+// FORMATS THE TIME
+// -----------------
+
 function parseTime(timestamp) {
     var date = new Date(timestamp * 1000);
     // Hours part from the timestamp
@@ -102,3 +99,47 @@ function parseTime(timestamp) {
     var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     return formattedTime;
 }
+
+// -----------------
+// SEARCH CITIES
+// -----------------
+$('#modalCities').on('shown.bs.modal', function () {
+    //clear previous results in the modal window
+    $('#listcities').html('');
+
+    let cty = $('#cityToSearch').val();
+    cty = cty.trim();
+    //console.log('vai buscar ' + cty);
+
+    //search cities in the JSON file
+    var cities = [];
+    fetch("city.list.json")
+        .then(response => response.json())
+        .then(json => {
+            //console.log(json)
+            cities = $.grep(json, function(element, index) {
+                var rx = new RegExp(cty, "ig");
+                // console.log(index + '>> ' + cty + '>>> ' + element.name);
+                // console.log(element.name.match(`/${cty}gi`));
+                // console.log(element.name.match('/'+cty+'/gi'));
+                // console.log(element.name === cty);
+                // console.log(element.name == cty);
+                // console.log(element.name.match(reg));
+                // console.log(element.name.includes(cty));
+                // console.log(/cty/i.test(element.name));
+                // console.log(index + '>> ' + (element.name.search(rx) > 0));
+                return element.name.search(rx) >= 0;
+            });
+
+            // console.log('Selected cities: ');
+            // console.log(cities);
+    
+            // put the results in the modal window
+            cities.forEach(ct => {
+                //console.log(ct);
+                let i = $("<li class='list-group-item'></li>");
+                i.text(countryCodeEmoji(ct.country) + " - " + ct.name); 
+                $('#listcities').append(i);
+            });
+        });
+})

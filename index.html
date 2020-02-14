@@ -17,16 +17,17 @@
             <div class="col-12">
 
                 <!-- Weather widget -->
-                <div id="weatherforecast">
+                <div id="weatherforecast" class="shadow-lg rounded">
 
                     <div class="container text-center">
                         <div class="row">
                             <div class="col-12">
                                 <div class="input-group mb-3 mt-3">
                                     <input type="text" class="form-control" placeholder="City" aria-label="City"
-                                        aria-describedby="button-addon2">
+                                        aria-describedby="button-addon2" id="cityToSearch">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="buttonSearch">
+                                        <button class="btn btn-outline-secondary" type="button" id="buttonSearch"
+                                            data-toggle="modal" data-target="#modalCities">
                                             <img src="./search-button.svg" alt="search">
                                         </button>
                                     </div>
@@ -76,10 +77,27 @@
                         </div>
                     </div>
 
-
                 </div>
 
                 <div id="output"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalCities" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Select the correct city</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group" id="listcities"></ul>
+                </div>
             </div>
         </div>
     </div>
