@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    //loadWeather(6173331); // Vancouver BC, Canada
+    loadWeather(6173331); // Vancouver BC, Canada
 });
 
 // -----------------
@@ -22,7 +22,7 @@ function loadWeather(location) {
             }
 
             response.json().then(function(data){
-                console.log(data);
+                //console.log(data);
                 //$('#output').html(JSON.stringify(data));
 
                 $('#cityName').html(data.name + " " + countryCodeEmoji(data.sys.country));
@@ -100,6 +100,12 @@ function parseTime(timestamp) {
     return formattedTime;
 }
 
+function reloadCity(cityCode) {
+    $('#modalCities').modal('hide');
+    loadWeather(cityCode);
+    $('#cityToSearch').val('');
+}
+
 // -----------------
 // SEARCH CITIES
 // -----------------
@@ -137,9 +143,18 @@ $('#modalCities').on('shown.bs.modal', function () {
             // put the results in the modal window
             cities.forEach(ct => {
                 //console.log(ct);
-                let i = $("<li class='list-group-item'></li>");
-                i.text(countryCodeEmoji(ct.country) + " - " + ct.name); 
+                let i = $('<button type="button" class="list-group-item list-group-item-action">');
+                i.text(countryCodeEmoji(ct.country) + " - " + ct.name);
+                i.attr("onclick", `reloadCity(${ct.id})`);
                 $('#listcities').append(i);
             });
         });
-})
+});
+
+$('#cityToSearch').keydown(function (event) { 
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("buttonSearch").click();
+    }
+});
+
