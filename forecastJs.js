@@ -1,5 +1,6 @@
 $(document).ready(function(){
     loadWeather(6173331); // Vancouver BC, Canada
+    //loadWeather(2643743); // London, UK
 });
 
 // -----------------
@@ -40,8 +41,8 @@ function loadWeather(location) {
                     $('#weather').html(prev);
                 });
 
-                $('#sunrise').html(parseTime(data.sys.sunrise));
-                $('#sunset').html(parseTime(data.sys.sunset));
+                $('#sunrise').html(parseTime(data.sys.sunrise, data.timezone));
+                $('#sunset').html(parseTime(data.sys.sunset, data.timezone));
 
             })
             .catch(function(error){
@@ -86,8 +87,16 @@ function countryCodeEmoji(cc) {
 // FORMATS THE TIME
 // -----------------
 
-function parseTime(timestamp) {
-    var date = new Date(timestamp * 1000);
+function parseTime(timestamp, timezone) {
+    var local = new Date();
+    console.log(local.getTimezoneOffset()*60);
+    console.log('Timezone: ' + timezone);
+
+    var adjTimestamp = (timestamp * 1000) + timezone - (local.getTimezoneOffset()*60);
+    console.log(adjTimestamp);
+
+    var date = new Date(adjTimestamp);
+    console.log(date);
     // Hours part from the timestamp
     var hours = date.getHours();
     // Minutes part from the timestamp
@@ -101,6 +110,7 @@ function parseTime(timestamp) {
 }
 
 function reloadCity(cityCode) {
+    console.log(`Reload city ${cityCode}`);
     $('#modalCities').modal('hide');
     loadWeather(cityCode);
     $('#cityToSearch').val('');
