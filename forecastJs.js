@@ -151,13 +151,19 @@ $('#modalCities').on('shown.bs.modal', function () {
             // console.log(cities);
     
             // put the results in the modal window
-            cities.forEach(ct => {
-                //console.log(ct);
-                let i = $('<button type="button" class="list-group-item list-group-item-action">');
-                i.text(countryCodeEmoji(ct.country) + " - " + ct.name);
-                i.attr("onclick", `reloadCity(${ct.id})`);
+            if (cities.length <= 0) {
+                let i = $('<p></p>');
+                i.text(`No city found to ${cty}`);
                 $('#listcities').append(i);
-            });
+            } else {
+                cities.forEach(ct => {
+                    //console.log(ct);
+                    let i = $('<button type="button" class="list-group-item list-group-item-action">');
+                    i.text(countryCodeEmoji(ct.country) + " - " + ct.name);
+                    i.attr("onclick", `reloadCity(${ct.id})`);
+                    $('#listcities').append(i);
+                });
+            }
         });
 });
 
