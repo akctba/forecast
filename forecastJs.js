@@ -1,21 +1,41 @@
 $(document).ready(function () {
-    //loadWeather(6173331); // Vancouver BC, Canada
-    loadWeather(2643743); // London, UK
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(weatherPosition);
+    } else {
+        loadWeatherByLocation(6173331); // Vancouver BC, Canada
+    }
+
+    //loadWeatherByLocation(6173331); // Vancouver BC, Canada
+    //loadWeatherByLocation(2643743); // London, UK
 });
+
+function weatherPosition(position) {
+    //console.log(position);
+    // console.log("Latitude: " + position.coords.latitude);
+    // console.log("Longitude: " + position.coords.longitude);
+    const url = "https://api.openweathermap.org/data/2.5/weather?lat="+position.coords.latitude+"&lon="+position.coords.longitude+"&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric";
+    
+    loadWeather(url);
+
+}
 
 // -----------------
 // CURRENT WEATHER FETCH
 // -----------------
-function loadWeather(location) {
+function loadWeatherByLocation(location) {
+    const url = "https://api.openweathermap.org/data/2.5/weather?id=" + location + "&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric";
+    loadWeather(url);
+}
+
+function loadWeather(endpoint) {
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
     };
 
-    const url = "https://api.openweathermap.org/data/2.5/weather?id=" + location + "&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric";
     const celsius = '&#8451;';
 
-    fetch(url, requestOptions)
+    fetch(endpoint, requestOptions)
         .then((response) => {
             if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code:' + response.status);
@@ -90,14 +110,13 @@ function countryCodeEmoji(cc) {
 function parseTime(timestamp, timezone, desc) {
     let local = new Date();
     //console.log(local.getTimezoneOffset()*60);
-    console.log('>>> Timezone: ' + timezone);
+    //console.log('>>> Timezone: ' + timezone);
 
     //var adjTimestamp = (timestamp * 1000) - timezone - (local.getTimezoneOffset()/60);
     var adjTimestamp = timestamp * 1000 + timezone * 1000;
-    console.log('Adjusted time: ' + adjTimestamp);
+    //console.log('Adjusted time: ' + adjTimestamp);
 
     var date = new Date(adjTimestamp);
-    console.log(date);
     // Hours part from the timestamp
     var hours = date.getUTCHours();
     // Minutes part from the timestamp
@@ -107,14 +126,13 @@ function parseTime(timestamp, timezone, desc) {
 
     // Will display time in HH:MM:SS format
     var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    console.log(`${desc}: ${formattedTime} | Object: ${date}`);
     return formattedTime;
 }
 
 function reloadCity(cityCode) {
-    console.log(`Reload city ${cityCode}`);
+    //console.log(`Reload city ${cityCode}`);
     $('#modalCities').modal('hide');
-    loadWeather(cityCode);
+    loadWeatherByLocation(cityCode);
     $('#cityToSearch').val('');
 }
 
@@ -137,15 +155,6 @@ $('#modalCities').on('shown.bs.modal', function () {
             //console.log(json)
             cities = $.grep(json, function (element, index) {
                 var rx = new RegExp(cty, "ig");
-                // console.log(index + '>> ' + cty + '>>> ' + element.name);
-                // console.log(element.name.match(`/${cty}gi`));
-                // console.log(element.name.match('/'+cty+'/gi'));
-                // console.log(element.name === cty);
-                // console.log(element.name == cty);
-                // console.log(element.name.match(reg));
-                // console.log(element.name.includes(cty));
-                // console.log(/cty/i.test(element.name));
-                // console.log(index + '>> ' + (element.name.search(rx) > 0));
                 return element.name.search(rx) >= 0;
             });
 
