@@ -1,10 +1,10 @@
-$(document).ready(function(){
-    loadWeather(6173331); // Vancouver BC, Canada
-    //loadWeather(2643743); // London, UK
+$(document).ready(function () {
+    //loadWeather(6173331); // Vancouver BC, Canada
+    loadWeather(2643743); // London, UK
 });
 
 // -----------------
-// WEATHER FETCH
+// CURRENT WEATHER FETCH
 // -----------------
 function loadWeather(location) {
     var requestOptions = {
@@ -12,42 +12,42 @@ function loadWeather(location) {
         redirect: 'follow'
     };
 
-    const url = "https://api.openweathermap.org/data/2.5/weather?id="+location+"&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric";
+    const url = "https://api.openweathermap.org/data/2.5/weather?id=" + location + "&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric";
     const celsius = '&#8451;';
 
     fetch(url, requestOptions)
         .then((response) => {
-            if(response.status !== 200) {
+            if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code:' + response.status);
                 return;
             }
 
-            response.json().then(function(data){
-                //console.log(data);
-                //$('#output').html(JSON.stringify(data));
+            response.json().then(function (data) {
+                    //console.log(data);
+                    //$('#output').html(JSON.stringify(data));
 
-                $('#cityName').html(data.name + " " + countryCodeEmoji(data.sys.country));
-                //$('#country').html(countryCodeEmoji(data.sys.country));
-                $('#temp').html(data.main.temp + celsius);
-                $('#min').html(data.main.temp_min + celsius);
-                $('#max').html(data.main.temp_max + celsius);
-                $('#feelslike').html(data.main.feels_like + celsius);
-                $('#pressure').html(data.main.pressure);
-                $('#humidity').html(data.main.humidity);
+                    $('#cityName').html(data.name + " " + countryCodeEmoji(data.sys.country));
+                    //$('#country').html(countryCodeEmoji(data.sys.country));
+                    $('#temp').html(data.main.temp + celsius);
+                    $('#min').html(data.main.temp_min + celsius);
+                    $('#max').html(data.main.temp_max + celsius);
+                    $('#feelslike').html(data.main.feels_like + celsius);
+                    $('#pressure').html(data.main.pressure);
+                    $('#humidity').html(data.main.humidity);
 
-                data.weather.forEach(element => {
-                    let prev = $('#weather').html();
-                    prev += `<li class='list-inline-item'>${element.main}<img src="http://openweathermap.org/img/wn/${element.icon}.png" alt="${element.description}"></li>`;
-                    $('#weather').html(prev);
+                    data.weather.forEach(element => {
+                        let prev = $('#weather').html();
+                        prev += `<li class='list-inline-item'>${element.main}<img src="http://openweathermap.org/img/wn/${element.icon}.png" alt="${element.description}"></li>`;
+                        $('#weather').html(prev);
+                    });
+
+                    $('#sunrise').html(parseTime(data.sys.sunrise, data.timezone, 'Sunrise'));
+                    $('#sunset').html(parseTime(data.sys.sunset, data.timezone, 'Sunset'));
+
+                })
+                .catch(function (error) {
+                    console.log('this is a error ' + error);
                 });
-
-                $('#sunrise').html(parseTime(data.sys.sunrise, data.timezone));
-                $('#sunset').html(parseTime(data.sys.sunset, data.timezone));
-
-            })
-            .catch(function(error){
-                console.log('this is a error ' +  error);
-            });
         })
         //.then(result => console.log(result))
         .catch(error => console.log('error', error));
@@ -70,42 +70,44 @@ const OFFSET = 127397;
  * @returns {string} country code emoji
  */
 function countryCodeEmoji(cc) {
-  if (!CC_REGEX.test(cc)) {
-    const type = typeof cc;
-    throw new TypeError(
-      `cc argument must be an ISO 3166-1 alpha-2 string, but got '${
+    if (!CC_REGEX.test(cc)) {
+        const type = typeof cc;
+        throw new TypeError(
+            `cc argument must be an ISO 3166-1 alpha-2 string, but got '${
         type === 'string' ? cc : type
       }' instead.`,
-    );
-  }
+        );
+    }
 
-  const chars = [...cc.toUpperCase()].map(c => c.charCodeAt() + OFFSET);
-  return String.fromCodePoint(...chars);
+    const chars = [...cc.toUpperCase()].map(c => c.charCodeAt() + OFFSET);
+    return String.fromCodePoint(...chars);
 }
 
 // -----------------
 // FORMATS THE TIME
 // -----------------
 
-function parseTime(timestamp, timezone) {
-    var local = new Date();
-    console.log(local.getTimezoneOffset()*60);
-    console.log('Timezone: ' + timezone);
+function parseTime(timestamp, timezone, desc) {
+    let local = new Date();
+    //console.log(local.getTimezoneOffset()*60);
+    console.log('>>> Timezone: ' + timezone);
 
-    var adjTimestamp = (timestamp * 1000) + timezone - (local.getTimezoneOffset()*60);
-    console.log(adjTimestamp);
+    //var adjTimestamp = (timestamp * 1000) - timezone - (local.getTimezoneOffset()/60);
+    var adjTimestamp = timestamp * 1000 + timezone * 1000;
+    console.log('Adjusted time: ' + adjTimestamp);
 
     var date = new Date(adjTimestamp);
     console.log(date);
     // Hours part from the timestamp
-    var hours = date.getHours();
+    var hours = date.getUTCHours();
     // Minutes part from the timestamp
-    var minutes = "0" + date.getMinutes();
+    var minutes = "0" + date.getUTCMinutes();
     // Seconds part from the timestamp
-    var seconds = "0" + date.getSeconds();
+    var seconds = "0" + date.getUTCSeconds();
 
     // Will display time in HH:MM:SS format
     var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    console.log(`${desc}: ${formattedTime} | Object: ${date}`);
     return formattedTime;
 }
 
@@ -133,7 +135,7 @@ $('#modalCities').on('shown.bs.modal', function () {
         .then(response => response.json())
         .then(json => {
             //console.log(json)
-            cities = $.grep(json, function(element, index) {
+            cities = $.grep(json, function (element, index) {
                 var rx = new RegExp(cty, "ig");
                 // console.log(index + '>> ' + cty + '>>> ' + element.name);
                 // console.log(element.name.match(`/${cty}gi`));
@@ -149,7 +151,7 @@ $('#modalCities').on('shown.bs.modal', function () {
 
             // console.log('Selected cities: ');
             // console.log(cities);
-    
+
             // put the results in the modal window
             if (cities.length <= 0) {
                 let i = $('<p></p>');
@@ -167,10 +169,9 @@ $('#modalCities').on('shown.bs.modal', function () {
         });
 });
 
-$('#cityToSearch').keydown(function (event) { 
+$('#cityToSearch').keydown(function (event) {
     if (event.keyCode === 13) {
         event.preventDefault();
         document.getElementById("buttonSearch").click();
     }
 });
-
