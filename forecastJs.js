@@ -2,6 +2,7 @@ $(document).ready(function () {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(weatherPosition);
     } else {
+        //browser doesn't support geolocation
         loadWeatherByLocation(6173331); // Vancouver BC, Canada
     }
 
@@ -9,14 +10,15 @@ $(document).ready(function () {
     //loadWeatherByLocation(2643743); // London, UK
 });
 
+const celsius = '&#8451;';
+
 function weatherPosition(position) {
     //console.log(position);
     // console.log("Latitude: " + position.coords.latitude);
     // console.log("Longitude: " + position.coords.longitude);
-    const url = "https://api.openweathermap.org/data/2.5/weather?lat="+position.coords.latitude+"&lon="+position.coords.longitude+"&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric";
-    
-    loadWeather(url);
+    const url = "https://api.openweathermap.org/data/2.5/weather?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric";
 
+    loadWeather(url);
 }
 
 // -----------------
@@ -32,8 +34,6 @@ function loadWeather(endpoint) {
         method: 'GET',
         redirect: 'follow'
     };
-
-    const celsius = '&#8451;';
 
     fetch(endpoint, requestOptions)
         .then((response) => {
@@ -61,8 +61,11 @@ function loadWeather(endpoint) {
                         $('#weather').html(prev);
                     });
 
-                    $('#sunrise').html(parseTime(data.sys.sunrise, data.timezone, 'Sunrise'));
-                    $('#sunset').html(parseTime(data.sys.sunset, data.timezone, 'Sunset'));
+                    $('#sunrise').html(parseTime(data.sys.sunrise, data.timezone));
+                    $('#sunset').html(parseTime(data.sys.sunset, data.timezone));
+
+                    //load the forecast
+                    forecast(data.id);
 
                 })
                 .catch(function (error) {
@@ -107,7 +110,7 @@ function countryCodeEmoji(cc) {
 // FORMATS THE TIME
 // -----------------
 
-function parseTime(timestamp, timezone, desc) {
+function parseTime(timestamp, timezone) {
     let local = new Date();
     //console.log(local.getTimezoneOffset()*60);
     //console.log('>>> Timezone: ' + timezone);
@@ -128,6 +131,8 @@ function parseTime(timestamp, timezone, desc) {
     var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     return formattedTime;
 }
+
+
 
 function reloadCity(cityCode) {
     //console.log(`Reload city ${cityCode}`);
@@ -184,3 +189,52 @@ $('#cityToSearch').keydown(function (event) {
         document.getElementById("buttonSearch").click();
     }
 });
+
+// -----------------
+// FORECAST
+// -----------------
+
+function forecast(cityId) {
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+
+    const endpoint = `http://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric`
+
+    fetch(endpoint, requestOptions)
+        .then((response) => {
+            if (response.status !== 200) {
+                console.log('Looks like there was a problem. Status Code:' + response.status);
+                return;
+            }
+
+            response.json().then(function (data) {
+                //console.log(data.list);
+                let numberOf = 4;
+
+                let row = $("<div class='row'></div>");
+                for(let i=0; i < numberOf; i++) {
+                    let col = $("<div class='col'></div>");
+
+                    //icon
+                    col.append($(`<div><img src="http://openweathermap.org/img/wn/${data.list[i].weather[0].icon}.png" alt="${data.list[i].weather[0].description}">`));
+                    //time
+                    col.append($("<div class='text-info'></div>").text(parseTime(data.list[i].dt, data.city.timezone)));
+                    //description
+                    col.append($("<div></div>").text(data.list[i].weather[0].description));
+
+                    row.append(col);
+
+                }
+                $("#forecast").append(row);
+
+            })
+            .catch(function (error) {
+                console.log('this is a error ' + error);
+            });
+        })
+        //.then(result => console.log(result))
+        .catch(error => console.log('error', error));
+}
+
