@@ -1,8 +1,3 @@
-body,
-html {
-    height: 100%;
-}
-
 .bg {
     /* The image used */
     background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),url("https://openweather.co.uk/storage/app/media/news-upgrade-api-multilingual-feature-us-cities-search-states.png"); 
@@ -12,16 +7,12 @@ html {
 
     /* Center and scale the image nicely */
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-size: cover;
+    background-attachment: fixed;
 }
 
-#weatherforecast {
-    width: 400px;
-    margin: 40px auto;
-    height: 600px;
-    word-wrap: normal;
-
-    background-color: rgba(255, 228, 196, 0.5);
+.weatherforecast {
+    background-color: rgba(255, 228, 196, 0.5) !important;
 
 }

@@ -13,77 +13,74 @@
 <body>
     <div class="container-fluid bg">
         <div class="row">
-            <div class="col-12">
-                <!-- Weather widget -->
-                <div id="weatherforecast" class="shadow-lg rounded">
+            <div class="col-sm-9 col-md-7 col-lg-4 mx-auto">
+                <div class="card my-5 weatherforecast">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Weather forecast</h5>
 
-                    <div class="container text-center rounded">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="input-group mb-3 mt-3">
-                                    <input type="text" class="form-control" placeholder="City" aria-label="City"
-                                        aria-describedby="button-addon2" id="cityToSearch">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="button" id="buttonSearch"
-                                            data-toggle="modal" data-target="#modalCities">
-                                            <img src="./search-button.svg" alt="search">
-                                        </button>
+                        <div class="container text-center rounded">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="input-group mb-3 mt-3">
+                                        <input type="text" class="form-control" placeholder="City" aria-label="City"
+                                            aria-describedby="button-addon2" id="cityToSearch">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary" type="button" id="buttonSearch"
+                                                data-toggle="modal" data-target="#modalCities">
+                                                <img src="./search-button.svg" alt="search">
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h1 id="cityName">C</h1>
-                                <!-- <p id="country">c</p> -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <h1 id="cityName">C</h1>
+                                    <!-- <p id="country">c</p> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h1 id="temp" class="display-2">x&#8451;</h1>
+                                    <p><span class="text-muted">Feels like </span> <span id="feelslike"></span></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><span class="text-muted">Min</span> <span id="min"></span></p>
+                                </div>
+                                <div class="col-6">
+                                    <p><span class="text-muted">Max</span> <span id="max"></span></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><span class="text-muted">Pressure</span> <span id="pressure"></span></p>
+                                </div>
+                                <div class="col-6">
+                                    <p><span class="text-muted">Humidity</span> <span id="humidity"></span>%</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <ul class="list-inline" id="weather"></ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><span class="text-muted">Sunrise</span> <span id="sunrise"></span></p>
+                                </div>
+                                <div class="col-6">
+                                    <p><span class="text-muted">Sunset</span> <span id="sunset"></span></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h1 id="temp" class="display-2">x&#8451;</h1>
-                                <p><span class="text-muted">Feels like </span> <span id="feelslike"></span></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <p><span class="text-muted">Min</span> <span id="min"></span></p>
-                            </div>
-                            <div class="col-6">
-                                <p><span class="text-muted">Max</span> <span id="max"></span></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <p><span class="text-muted">Pressure</span> <span id="pressure"></span></p>
-                            </div>
-                            <div class="col-6">
-                                <p><span class="text-muted">Humidity</span> <span id="humidity"></span>%</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <ul class="list-inline" id="weather"></ul>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <p><span class="text-muted">Sunrise</span> <span id="sunrise"></span></p>
-                            </div>
-                            <div class="col-6">
-                                <p><span class="text-muted">Sunset</span> <span id="sunset"></span></p>
-                            </div>
-                        </div>
+                        <!-- forecast -->
+                        <div id="forecast" class="container"></div>
+                        
+                        <div id="output"></div>
                     </div>
-
-                    <!-- forecast -->
-                    <div id="forecast" class="container">
-
-
-                    </div>
-
                 </div>
-
-                <div id="output"></div>
             </div>
         </div>
     </div>
