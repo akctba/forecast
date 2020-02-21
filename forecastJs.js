@@ -48,7 +48,7 @@ function loadWeather(endpoint) {
 
                     $('#cityName').html(data.name + " " + countryCodeEmoji(data.sys.country));
                     //$('#country').html(countryCodeEmoji(data.sys.country));
-                    $('#temp').html(data.main.temp + celsius);
+                    $('#temp').html(Math.round(data.main.temp) + celsius);
                     $('#min').html(data.main.temp_min + celsius);
                     $('#max').html(data.main.temp_max + celsius);
                     $('#feelslike').html(data.main.feels_like + celsius);
@@ -128,7 +128,7 @@ function parseTime(timestamp, timezone) {
     var seconds = "0" + date.getUTCSeconds();
 
     // Will display time in HH:MM:SS format
-    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    var formattedTime = hours + ':' + minutes.substr(-2); // + ':' + seconds.substr(-2);
     return formattedTime;
 }
 
