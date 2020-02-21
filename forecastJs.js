@@ -48,7 +48,7 @@ function loadWeather(endpoint) {
 
                     $('#cityName').html(data.name + " " + countryCodeEmoji(data.sys.country));
                     //$('#country').html(countryCodeEmoji(data.sys.country));
-                    $('#temp').html(data.main.temp + celsius);
+                    $('#temp').html(Math.round(data.main.temp) + celsius);
                     $('#min').html(data.main.temp_min + celsius);
                     $('#max').html(data.main.temp_max + celsius);
                     $('#feelslike').html(data.main.feels_like + celsius);
@@ -57,7 +57,7 @@ function loadWeather(endpoint) {
 
                     data.weather.forEach(element => {
                         let prev = $('#weather').html();
-                        prev += `<li class='list-inline-item'>${element.main}<img src="http://openweathermap.org/img/wn/${element.icon}.png" alt="${element.description}"></li>`;
+                        prev += `<li class='list-inline-item'>${element.main}<img src="https://openweathermap.org/img/wn/${element.icon}.png" alt="${element.description}"></li>`;
                         $('#weather').html(prev);
                     });
 
@@ -69,11 +69,11 @@ function loadWeather(endpoint) {
 
                 })
                 .catch(function (error) {
-                    console.log('this is a error ' + error);
+                    console.error('this is a error ' + error);
                 });
         })
         //.then(result => console.log(result))
-        .catch(error => console.log('error', error));
+        .catch(error => console.error('error', error));
 }
 
 
@@ -128,7 +128,7 @@ function parseTime(timestamp, timezone) {
     var seconds = "0" + date.getUTCSeconds();
 
     // Will display time in HH:MM:SS format
-    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    var formattedTime = hours + ':' + minutes.substr(-2); // + ':' + seconds.substr(-2);
     return formattedTime;
 }
 
@@ -202,7 +202,7 @@ function forecast(cityId) {
         redirect: 'follow'
     };
 
-    const endpoint = `http://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric`
+    const endpoint = `https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=420432ebcd0b1d4e01e32dc8bcd4b99d&units=metric`
 
     fetch(endpoint, requestOptions)
         .then((response) => {
@@ -220,7 +220,7 @@ function forecast(cityId) {
                     let col = $("<div class='col'></div>");
 
                     //icon
-                    col.append($(`<div><img src="http://openweathermap.org/img/wn/${data.list[i].weather[0].icon}.png" alt="${data.list[i].weather[0].description}">`));
+                    col.append($(`<div><img src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}.png" alt="${data.list[i].weather[0].description}">`));
                     //time
                     col.append($("<div class='text-info'></div>").text(parseTime(data.list[i].dt, data.city.timezone)));
                     //description
