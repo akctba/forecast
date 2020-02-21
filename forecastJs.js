@@ -195,6 +195,8 @@ $('#cityToSearch').keydown(function (event) {
 // -----------------
 
 function forecast(cityId) {
+    $("#forecast").html('');
+
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
